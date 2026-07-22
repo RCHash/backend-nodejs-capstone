@@ -5,16 +5,20 @@ const MongoClient = require('mongodb').MongoClient;
 // MongoDB connection URL with authentication options
 let url = `${process.env.MONGO_URL}`;
 
-let dbInstance = connectToDatabase();
+let dbInstance = null;
 const dbName = `${process.env.MONGO_DB}`;
 
 async function connectToDatabase() {
     if (dbInstance){
         return dbInstance
     };
-
-    const client = new MongoClient(url);      
-
+    // if the MongoDB URL is missing
+    if (!url) {
+        // throw an error and stop execution
+        throw new Error('MONGO_URL missing');
+    }
+    // create a new client instance
+    const client = new MongoClient(url);
     // Task 1: Connect to MongoDB
     try {
         // connect to the mongodb client
