@@ -75,7 +75,7 @@ router.get('/:id', async (req, res, next) => {
         //Step 4: task 2 - insert code here
         const collection = db.collection("secondChanceItems");
         //Step 4: task 3 - insert code here
-        const secondChanceItem = await collection.findOne({ id: id });
+        const secondChanceItem = await collection.findOne({ id: req.params.id });
         //Step 4: task 4 - insert code here
         if (!secondChanceItem) {
             return res.status(404).send("secondChanceItem not found");
@@ -94,7 +94,7 @@ router.put('/:id', async(req, res,next) => {
         //Step 5: task 2 - insert code here
         const collection = db.collection("secondChanceItems");
         //Step 5: task 3 - insert code here
-        const secondChanceItem = await collection.findOne({ id });
+        const secondChanceItem = await collection.findOne({ id: req.params.id });
         if (!secondChanceItem) {
             logger.error('secondChanceItem not found');
             return res.status(404).json({ error: "secondChanceItem not found" });
@@ -108,7 +108,7 @@ router.put('/:id', async(req, res,next) => {
         secondChanceItem.updatedAt = new Date();
 
         const updatepreloveItem = await collection.findOneAndUpdate(
-            { id },
+            { id: req.params.id },
             { $set: secondChanceItem },
             { returnDocument: 'after' }
         );
@@ -131,14 +131,14 @@ router.delete('/:id', async(req, res,next) => {
         //Step 6: task 2 - insert code here
         const collection = db.collection("secondChanceItems");
         //Step 6: task 3 - insert code here
-        const secondChanceItem = await collection.findOne({ id });
+        const secondChanceItem = await collection.findOne({ id: req.params.id });
 
         if (!secondChanceItem) {
         logger.error('secondChanceItem not found');
         return res.status(404).json({ error: "secondChanceItem not found" });
         }
         //Step 6: task 4 - insert code here
-        await collection.deleteOne({ id });
+        await collection.deleteOne({ id: req.params.id });
         res.json({"deleted":"success"});
     } catch (e) {
         next(e);
