@@ -1,3 +1,15 @@
+const express = require('express');
+const bcryptjs = require('bcryptjs');
+const jwt = require('jsonwebtoken');
+const connectToDatabase = require('../models/db');
+const router = express.Router();
+const dotenv = require('dotenv');
+const pino = require('pino');  // Import Pino logger
+const logger = require('../logger');
+dotenv.config();
+
+//Create JWT secret
+const JWT_SECRET = process.env.JWT_SECRET;
 
 router.post('/register', async (req, res) => {
     try {
@@ -15,6 +27,7 @@ router.post('/register', async (req, res) => {
 		// Task 4: Create a hash to encrypt the password so that it is not readable in the database
         const salt = await bcryptjs.genSalt(10);
         const hash = await bcryptjs.hash(req.body.password, salt);
+        const email=req.body.email;
         // Task 5: Insert the user into the database
         const newUser = await collection.insertOne({
             email: req.body.email,
@@ -37,6 +50,9 @@ router.post('/register', async (req, res) => {
         res.json({ authtoken,email });
 
     } catch (e) {
-         return res.status(500).send('Internal server error');
+        logger.error(e);
+        return res.status(500).send('Internal server error');
     }
 });
+
+module.exports = router;
