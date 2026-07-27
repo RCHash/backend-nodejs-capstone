@@ -11,7 +11,7 @@ router.get('/', async (req, res, next) => {
     const collection = db.collection('gifts')
 
     // Initialize the query object
-    const query = {};
+    const query = {}
 
     // Add the name filter to the query if the name parameter is not empty
     if (req.query.name && req.query.name.trim() !== '') {
