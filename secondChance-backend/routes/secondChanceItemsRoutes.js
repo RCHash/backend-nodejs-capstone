@@ -21,7 +21,6 @@ const storage = multer.diskStorage({
 
 const upload = multer({ storage: storage })
 
-
 // Get all secondChanceItems
 router.get('/', async (req, res, next) => {
   logger.info('/ called')
@@ -36,14 +35,13 @@ router.get('/', async (req, res, next) => {
     res.json(secondChanceItems)
   } catch (e) {
     logger.console.error('oops something went wrong', e)
-      next(e)
+    next(e)
   }
 })
 
 // Add a new item
-router.post('/', upload.single('file'), async( req, res, next ) => { // Step 3: Task 7 insert code here
+router.post('/', upload.single('file'), async (req, res, next) => { // Step 3: Task 7 insert code here
   try {
-
     // Step 3: task 1 - insert code here
     const db = await connectToDatabase()
     // Step 3: task 2 - insert code here
@@ -87,7 +85,7 @@ router.get('/:id', async (req, res, next) => {
 })
 
 // Update and existing item
-router.put('/:id', async( req, res, next ) => {
+router.put('/:id', async (req, res, next) => {
   try {
     // Step 5: task 1 - insert code here
     const db = await connectToDatabase()
@@ -96,7 +94,7 @@ router.put('/:id', async( req, res, next ) => {
     // Step 5: task 3 - insert code here
     const secondChanceItem = await collection.findOne({ id: req.params.id })
     if (!secondChanceItem) {
-      logger.error('secondChanceItem not found');
+      logger.error('secondChanceItem not found')
       return res.status(404).json({ error: 'secondChanceItem not found' })
     }
     // Step 5: task 4 - insert code here
@@ -113,7 +111,7 @@ router.put('/:id', async( req, res, next ) => {
       { returnDocument: 'after' }
     )
     // Step 5: task 5 - insert code here
-    if(updatepreloveItem) {
+    if (updatepreloveItem) {
       res.json({ uploaded: 'success' })
     } else {
       res.json({ uploaded: 'failed' })
@@ -124,7 +122,7 @@ router.put('/:id', async( req, res, next ) => {
 })
 
 // Delete an existing item
-router.delete('/:id', async( req, res, next ) => {
+router.delete('/:id', async (req, res, next) => {
   try {
     // Step 6: task 1 - insert code here
     const db = await connectToDatabase()
